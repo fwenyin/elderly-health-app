@@ -1,1 +1,0 @@
-/Users/wenyin/Desktop/elderly-health-app/android/app/src/main/kotlin/com/example/flutter_application_1/MainActivity.kt
