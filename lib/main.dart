@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'screens/login.dart';
-import 'screens/home.dart';
+import 'screens/explore_screen.dart';
+import 'screens/family_screen.dart';
+import 'screens/food_screen.dart';
+import 'screens/health_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +24,6 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             return snapshot.data != null ? HomePage() : LoginPage();
           }
-          // Show a loading indicator while Firebase Auth initializes
           return Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
@@ -28,6 +31,13 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
+      routes: {
+        '/family': (context) => FamilyPage(),
+        '/health': (context) => HealthPage(),
+        '/home': (context) => HomePage(),
+        '/food': (context) => FoodPage(),
+        '/explore': (context) => ExplorePage(),
+      },
     );
   }
 }

@@ -9,6 +9,7 @@ class DailyFeeling extends StatefulWidget {
 
 class _DailyFeelingState extends State<DailyFeeling> {
   String _currentFeeling = '';
+  String _userName = 'Name of User'; 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -16,6 +17,7 @@ class _DailyFeelingState extends State<DailyFeeling> {
   void initState() {
     super.initState();
     _fetchCurrentFeeling();
+    _fetchUserName();
   }
 
   @override
@@ -23,7 +25,7 @@ class _DailyFeelingState extends State<DailyFeeling> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Hello Name of User'), // Get user's name from Firebase.
+        Text('Hello $_userName'),
         Row(
           children: [
             Text('You feel... $_currentFeeling'),
@@ -73,7 +75,7 @@ class _DailyFeelingState extends State<DailyFeeling> {
   }
 
   Future<void> _saveFeelingToFirestore(String feeling) async {
-    String userId = _auth.currentUser!.uid; // Get the current user's ID.
+    String userId = _auth.currentUser!.uid;
 
     // Save the feeling to Firestore with the user's ID and the current date as the document ID.
     await _firestore
@@ -89,9 +91,8 @@ class _DailyFeelingState extends State<DailyFeeling> {
   }
 
   Future<void> _fetchCurrentFeeling() async {
-    String userId = _auth.currentUser!.uid; // Get the current user's ID.
+    String userId = _auth.currentUser!.uid; 
 
-    // Fetch the feeling for the current day.
     DocumentSnapshot snapshot = await _firestore
         .collection('users')
         .doc(userId)
@@ -104,6 +105,21 @@ class _DailyFeelingState extends State<DailyFeeling> {
       setState(() {
         _currentFeeling = data['feeling'] ??
             '';
+      });
+    }
+  }
+
+  Future<void> _fetchUserName() async {
+    String userId = _auth.currentUser!.uid;
+
+    DocumentSnapshot snapshot =
+        await _firestore.collection('users').doc(userId).get();
+
+    if (snapshot.exists && snapshot.data() is Map<String, dynamic>) {
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+      setState(() {
+        _userName = data['name'] ??
+            'Name of User';
       });
     }
   }
