@@ -18,13 +18,12 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DailyFeeling(),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
 
             Expanded(child: MedicationOverview()),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
 
-            Appointments(),
-            SizedBox(height: 40),
+            Expanded(child: AppointmentOverview()),
 
           ],
         ),

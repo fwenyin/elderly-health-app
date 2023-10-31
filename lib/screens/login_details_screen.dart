@@ -14,14 +14,22 @@ class _LoginDetailsPageState extends State<LoginDetailsPage> {
   final TextEditingController ageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  void saveUserDetails() async {
+   void saveUserDetails() async {
     if (_formKey.currentState!.validate()) {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
+        // Save name and age to users collection
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'name': nameController.text,
           'age': int.parse(ageController.text),
+          'phone': user.phoneNumber, // Save the phone number to users collection
         });
+
+        // Create a separate collection to map phone numbers to UIDs
+        await FirebaseFirestore.instance.collection('phoneNumbers').doc(user.phoneNumber).set({
+          'uid': user.uid,
+        });
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),

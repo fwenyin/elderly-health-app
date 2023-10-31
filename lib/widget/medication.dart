@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../model/medication_model.dart';
-import '../screens/edit_medication_screen.dart';
+import '../screens/add_medication_screen.dart';
 
 class MedicationOverview extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               "Medications Overview",
               style: TextStyle(
@@ -48,12 +48,11 @@ class _MedicationOverviewState extends State<MedicationOverview> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text('You have no medications added.'),
-                              SizedBox(height: 10),
                               ElevatedButton(
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) =>
-                                          EditMedicationScreen()));
+                                          MedicationScreen()));
                                 },
                                 child: Text('Add Medication'),
                               )
@@ -70,9 +69,12 @@ class _MedicationOverviewState extends State<MedicationOverview> {
                               dailyCheckboxState?[medication.id] ?? false;
                           return Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0),
+                                vertical: 2, horizontal: 2),
                             child: Card(
                               elevation: 5.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
                               child:
                                   _buildMedicationItem(medication, isChecked),
                             ),
@@ -94,7 +96,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => EditMedicationScreen()),
+            MaterialPageRoute(builder: (context) => MedicationScreen()),
           );
         },
       ),
@@ -103,6 +105,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
 
   Widget _buildMedicationItem(Medication medication, bool isChecked) {
     return ListTile(
+      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.5),
       leading: Checkbox(
         value: isChecked,
         onChanged: (bool? value) {
@@ -111,19 +114,33 @@ class _MedicationOverviewState extends State<MedicationOverview> {
           }
         },
       ),
-      title: Text('${medication.name} - ${medication.dosage}'),
+      title: Text('${medication.name}', style: TextStyle(fontSize: 14,
+          fontWeight: FontWeight.bold
+        ),
+      ),
       subtitle: Text(
-          '${medication.frequency}, ${medication.afterMeal ? "After Meal" : "Before Meal"}'),
-      trailing: IconButton(
-        icon: Icon(Icons.edit),
-        onPressed: () {
-          // Navigate to another screen to edit the medication
-          Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) =>
-                    EditMedicationScreen(medication: medication)),
-          );
-        },
+          'Dosage: ${medication.frequency}, ${medication.afterMeal ? "After meal" : "Before meal"}'),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              // Navigate to another screen to edit the medication
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MedicationScreen(medication: medication)),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              _deleteMedication(medication.id);
+            },
+          ),
+        ],
       ),
     );
   }
@@ -138,6 +155,20 @@ class _MedicationOverviewState extends State<MedicationOverview> {
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => Medication.fromDocument(doc)).toList());
+  }
+
+  Future<void> _deleteMedication(String medicationId) async {
+    String userId = _auth.currentUser!.uid;
+
+    await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('medications')
+        .doc(medicationId)
+        .delete();
+
+    // You might also want to remove any references to the medication from 'dailyCheckboxStates'
+    // For this example, I'm leaving it as is.
   }
 
   Future<void> _updateCheckboxState(String medicationId, bool isChecked) async {
@@ -160,16 +191,5 @@ class _MedicationOverviewState extends State<MedicationOverview> {
         .collection('dailyCheckboxStates')
         .doc(todayDate)
         .snapshots();
-  }
-}
-
-class MedicationItem extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.medication),
-      title: Text("Name"),
-      subtitle: Text("Dosage"),
-    );
   }
 }
