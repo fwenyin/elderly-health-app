@@ -73,6 +73,8 @@ androidx/annotation/XmlRes.class
 androidx/annotation/experimental/UseExperimental.class
 androidx/browser/browseractions/BrowserActionsIntent$BrowserActionsItemId.class
 androidx/browser/browseractions/BrowserActionsIntent$BrowserActionsUrlType.class
+androidx/browser/customtabs/CustomTabsIntent$ActivityHeightResizeBehavior.class
+androidx/browser/customtabs/CustomTabsIntent$CloseButtonPosition.class
 androidx/browser/customtabs/CustomTabsIntent$ColorScheme.class
 androidx/browser/customtabs/CustomTabsIntent$ShareState.class
 androidx/browser/customtabs/CustomTabsService$FilePurpose.class
@@ -86,13 +88,16 @@ androidx/core/app/CoreComponentFactory.class
 androidx/core/app/FrameMetricsAggregator$MetricType.class
 androidx/core/app/NotificationCompat$Action$SemanticAction.class
 androidx/core/app/NotificationCompat$BadgeIconType.class
+androidx/core/app/NotificationCompat$CallStyle$CallType.class
 androidx/core/app/NotificationCompat$GroupAlertBehavior.class
 androidx/core/app/NotificationCompat$NotificationVisibility.class
 androidx/core/app/NotificationCompat$ServiceNotificationBehavior.class
 androidx/core/app/NotificationCompat$StreamType.class
+androidx/core/app/PendingIntentCompat$Flags.class
 androidx/core/app/RemoteInput$EditChoicesBeforeSending.class
 androidx/core/app/RemoteInput$Source.class
 androidx/core/app/ServiceCompat$StopForegroundFlags.class
+androidx/core/content/ContextCompat$RegisterReceiverFlags.class
 androidx/core/content/PackageManagerCompat$UnusedAppRestrictionsStatus.class
 androidx/core/content/PermissionChecker$PermissionResult.class
 androidx/core/content/pm/PermissionInfoCompat$Protection.class

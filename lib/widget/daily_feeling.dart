@@ -82,8 +82,7 @@ class _DailyFeelingState extends State<DailyFeeling> {
         .collection('users')
         .doc(userId)
         .collection('feelings')
-        .doc(DateTime.now().toIso8601String().split('T')[
-            0]) // This will give the format 'YYYY-MM-DD' as the document ID.
+        .doc(DateTime.now().toIso8601String().split('T')[0]) // This will give the format 'YYYY-MM-DD' as the document ID.
         .set({
       'feeling': feeling,
       'timestamp': FieldValue.serverTimestamp(),

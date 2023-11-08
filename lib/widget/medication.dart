@@ -119,7 +119,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
         ),
       ),
       subtitle: Text(
-          'Dosage: ${medication.frequency}, ${medication.afterMeal ? "After meal" : "Before meal"}'),
+          'Dosage: ${medication.frequency} \n${medication.afterMeal ? "After meal" : "Before meal"}'),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

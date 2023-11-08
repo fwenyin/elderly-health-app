@@ -128,6 +128,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "http",
+      "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/http-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "http_parser",
       "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/http_parser-4.0.2",
       "packageUri": "lib/",
@@ -242,6 +248,54 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "url_launcher",
+      "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/url_launcher-6.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "url_launcher_android",
+      "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/url_launcher_android-6.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_ios",
+      "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/url_launcher_ios-6.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_linux",
+      "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/url_launcher_linux-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_macos",
+      "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/url_launcher_macos-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_platform_interface",
+      "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/url_launcher_platform_interface-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_web",
+      "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/url_launcher_web-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "url_launcher_windows",
+      "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/url_launcher_windows-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "vector_math",
       "rootUri": "file:///Users/wenyin/.pub-cache/hosted/pub.dev/vector_math-2.1.4",
       "packageUri": "lib/",
@@ -260,7 +314,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2023-10-27T16:15:42.547986Z",
+  "generated": "2023-11-04T09:12:14.116788Z",
   "generator": "pub",
   "generatorVersion": "3.1.4"
 }

@@ -93,7 +93,7 @@ class _AppointmentOverviewState extends State<AppointmentOverview> {
 
   Widget _buildAppointmentItem(Appointment appointment) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.5),
+      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       title: Text(
         '${appointment.location}',
         style: TextStyle(
@@ -102,7 +102,7 @@ class _AppointmentOverviewState extends State<AppointmentOverview> {
         ),
       ),
       subtitle: Text(
-          'Department: ${appointment.department}, DateTime: ${appointment.datetime}'),
+          'Department: ${appointment.department} \nDate: ${appointment.datetime.toString().split(" ")[0]}'),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

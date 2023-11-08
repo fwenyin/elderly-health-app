@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,8 +13,8 @@ class FamilyPage extends StatefulWidget {
 }
 
 class _FamilyPageState extends State<FamilyPage> {
-  // Firestore instance
   final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance; 
 
   @override
   Widget build(BuildContext context) {
@@ -53,23 +54,50 @@ class _FamilyPageState extends State<FamilyPage> {
             ),
             Expanded(
               child: StreamBuilder(
-                stream: _firestore.collection('family').snapshots(),
+                stream: _firestore
+                    .collection('users')
+                    .doc(_auth.currentUser!.uid) // Using the current user's UID
+                    .collection('friends')
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return CircularProgressIndicator();
                   }
-                  final familyMembers = snapshot.data!.docs;
-                  List<Widget> memberWidgets = [];
-                  for (var member in familyMembers) {
-                    final memberName = member['name'];
-                    final memberActivity = member['activity'];
-                    final memberWidget = ListTile(
-                      title: Text(memberName),
-                      subtitle: Text(memberActivity),
+                  final friends = snapshot.data!.docs;
+                  List<Widget> friendWidgets = [];
+                  for (var friend in friends) {
+                    final friendUid = friend['uid'];
+                    final friendWidget = FutureBuilder<DocumentSnapshot>(
+                      future:
+                          _firestore.collection('users').doc(friendUid).get(),
+                      builder: (context, userSnapshot) {
+                        if (!userSnapshot.hasData) {
+                          return ListTile(title: Text('Loading...'));
+                        }
+                        final friendName = userSnapshot.data!['name'];
+
+                        return FutureBuilder<String>(
+                          future: _fetchFriendFeeling(friendUid),
+                          builder: (context, feelingSnapshot) {
+                            if (!feelingSnapshot.hasData) {
+                              return ListTile(
+                                  title: Text(friendName),
+                                  subtitle: Text('Loading...'));
+                            }
+                            final friendFeeling = feelingSnapshot.data;
+                            return ListTile(
+                              title: Text(friendName),
+                              subtitle: Text(friendFeeling!),
+                            );
+                          },
+                        );
+                      },
                     );
-                    memberWidgets.add(memberWidget);
+
+                    friendWidgets.add(friendWidget);
                   }
-                  return ListView(children: memberWidgets);
+
+                  return ListView(children: friendWidgets);
                 },
               ),
             ),
@@ -77,7 +105,24 @@ class _FamilyPageState extends State<FamilyPage> {
           ],
         ),
       ),
-      bottomNavigationBar: CustomNavigationBar(currentIndex: 0),
+      bottomNavigationBar: CustomNavigationBar(
+          currentIndex: 0), // Assuming you have this widget defined elsewhere
     );
+  }
+
+  Future<String> _fetchFriendFeeling(String friendUid) async {
+    DocumentSnapshot snapshot = await _firestore
+        .collection('users')
+        .doc(friendUid)
+        .collection('feelings')
+        .doc(DateTime.now().toIso8601String().split('T')[0])
+        .get();
+
+    if (snapshot.exists && snapshot.data() is Map<String, dynamic>) {
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+      return data['feeling'] ?? 'No recent updates :(';
+    }
+
+    return 'No recent updates :(';
   }
 }
