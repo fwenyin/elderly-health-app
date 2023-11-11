@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../widget/app_bar.dart';
 import 'family_screen.dart';
 
 class AddFriendPage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Friend')),
+      appBar: CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(

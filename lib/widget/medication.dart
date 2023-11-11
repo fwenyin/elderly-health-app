@@ -20,6 +20,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
     return Scaffold(
       body: Column(
         children: [
+          
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(
@@ -48,6 +49,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text('You have no medications added.'),
+                              /*
                               ElevatedButton(
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
@@ -56,6 +58,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
                                 },
                                 child: Text('Add Medication'),
                               )
+                              */
                             ],
                           ),
                         );
@@ -93,6 +96,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        mini: true,
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context).push(

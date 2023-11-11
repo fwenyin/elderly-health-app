@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../model/medication_model.dart';
+import '../widget/app_bar.dart';
 
 class MedicationScreen extends StatefulWidget {
   final Medication? medication;
@@ -49,10 +50,9 @@ class _MedicationScreenState extends State<MedicationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text('My Medications')),
+      appBar: CustomAppBar(),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(20.0),
         child: Column(
           children: [
             TextFormField(
@@ -104,6 +104,7 @@ class _MedicationScreenState extends State<MedicationScreen> {
                 FilteringTextInputFormatter.digitsOnly
               ],
             ),
+            SizedBox(height: 10.0),
             CheckboxListTile(
               title: Text('After Meal'),
               value: afterMeal,
@@ -113,6 +114,7 @@ class _MedicationScreenState extends State<MedicationScreen> {
                 });
               },
             ),
+            SizedBox(height: 50.0),
             ElevatedButton(
               onPressed: _saveMedication,
               child: Text("Save Changes"),

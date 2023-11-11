@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../widget/app_bar.dart';
+
 class HealthReportScreen extends StatefulWidget {
   @override
   _HealthReportScreenState createState() => _HealthReportScreenState();
@@ -17,54 +19,52 @@ class _HealthReportScreenState extends State<HealthReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('View my Health Logs'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DropdownButton<String>(
-              hint: Text('Month'),
-              value: selectedMonth,
-              onChanged: (value) {
-                setState(() {
-                  selectedMonth = value!;
-                  _fetchMonthlyData();
-                });
-              },
-              items: [
-                // List of months (you can replace or add more as needed)
-                DropdownMenuItem(value: "January", child: Text("January")),
-                DropdownMenuItem(value: "February", child: Text("February")),
-                DropdownMenuItem(value: "March", child: Text("March")),
-                // ... (add all months)
-              ],
-            ),
+        appBar: CustomAppBar(),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DropdownButton<String>(
+                hint: Text('Month'),
+                value: selectedMonth,
+                onChanged: (value) {
+                  setState(() {
+                    selectedMonth = value!;
+                    _fetchMonthlyData();
+                  });
+                },
+                items: [
+                  // List of months (you can replace or add more as needed)
+                  DropdownMenuItem(value: "January", child: Text("January")),
+                  DropdownMenuItem(value: "February", child: Text("February")),
+                  DropdownMenuItem(value: "March", child: Text("March")),
+                  // ... (add all months)
+                ],
+              ),
+              Text('$selectedMonth Report:', style: TextStyle(fontSize: 18)),
+              SizedBox(height: 20),
+              Text('Days with Abnormalities'),
+              // Dummy container to represent the abnormalities section
+              Container(
+                height: 100,
+                color: Colors.grey[200],
+              ),
+              SizedBox(height: 20),
+              Text('Average Stats'),
+              // Dummy container to represent the average stats section
+              Container(
+                height: 100,
+                color: Colors.grey[300],
+              ),
+              SizedBox(height: 20),
+              _buildDateSelector(),
+              ListTile(title: Text('Heart Rate')),
+              ListTile(title: Text('Blood Pressure')),
+              ListTile(title: Text('Others')),
+            ],
           ),
-          Text('$selectedMonth Report:', style: TextStyle(fontSize: 18)),
-          SizedBox(height: 20),
-          Text('Days with Abnormalities'),
-          // Dummy container to represent the abnormalities section
-          Container(
-            height: 100,
-            color: Colors.grey[200],
-          ),
-          SizedBox(height: 20),
-          Text('Average Stats'),
-          // Dummy container to represent the average stats section
-          Container(
-            height: 100,
-            color: Colors.grey[300],
-          ),
-          SizedBox(height: 20),
-          _buildDateSelector(),
-          ListTile(title: Text('Heart Rate')),
-          ListTile(title: Text('Blood Pressure')),
-          ListTile(title: Text('Others')),
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _buildDateSelector() {

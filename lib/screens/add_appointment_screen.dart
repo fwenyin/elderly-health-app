@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../model/appointment_model.dart';
+import '../widget/app_bar.dart';
 
 class AppointmentScreen extends StatefulWidget {
   final Appointment? appointment;
@@ -39,13 +40,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.appointment == null ? "Add Appointment" : "Edit Appointment",
-        ),
-      ),
+      appBar: CustomAppBar(),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(20.0),
         child: Column(
           children: [
             TextFormField(
@@ -56,7 +53,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
               controller: _departmentController,
               decoration: InputDecoration(labelText: 'Department'),
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 10.0),
             ListTile(
               title: Text(
                 "${_datetime.toLocal().toString().split(' ')[0]}",
@@ -77,6 +74,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 }
               },
             ),
+            SizedBox(height: 50.0),
             ElevatedButton(
               onPressed: _saveAppointment,
               child: Text("Save Changes"),

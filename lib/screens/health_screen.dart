@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../widget/app_bar.dart';
+import '../widget/heading_text.dart';
 import '../widget/navigation_bar.dart';
 
 class HealthPage extends StatefulWidget {
@@ -26,27 +27,44 @@ class _HealthPageState extends State<HealthPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-      body: Column(
-        children: [
-          SizedBox(height: 20.0),
-          _buildHumanFigure(),
-          SizedBox(height: 20.0),
-          _buildEntryField('HeartRate', heartRateController),
-          SizedBox(height: 10.0),
-          _buildEntryField('Blood Pressure', bloodPressureController),
-          SizedBox(height: 10.0),
-          _buildDropdown('Body Ache', ['Back Pain']),
-          SizedBox(height: 10.0),
-          _buildDropdown('Others', ['Headache']),
-          SizedBox(height: 20.0),
-          ElevatedButton(
-              onPressed: _saveDataToFirestore, child: Text('Log Data')),
-          SizedBox(height: 20.0),
-          _buildWeeklySummary(),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            HeadingText('My Health Log'),
+            SizedBox(height: 20.0),
+            Row(
+              // Add a Row widget here
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _buildHumanFigure(),
+                ),
+                Expanded(
+                  child: Column(
+                    // Wrap the entry fields in a Column
+                    children: [
+                      _buildEntryField('HeartRate', heartRateController),
+                      _buildEntryField(
+                          'Blood Pressure', bloodPressureController),
+                      _buildDropdown('Body Ache', ['Back Pain']),
+                      _buildDropdown('Others', ['Headache']),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+                onPressed: _saveDataToFirestore, child: Text('Log Data')),
+            SizedBox(height: 20.0),
+            _buildWeeklySummary(),
+          ],
+        ),
       ),
       bottomNavigationBar: CustomNavigationBar(currentIndex: 1),
     );
@@ -55,8 +73,7 @@ class _HealthPageState extends State<HealthPage> {
   Widget _buildHumanFigure() {
     return Container(
       height: 200.0,
-      child: Image.asset(
-          'lib/asset/human_figure.png'), 
+      child: Image.asset('lib/asset/human_figure.png'),
     );
   }
 
@@ -88,7 +105,12 @@ class _HealthPageState extends State<HealthPage> {
     return Expanded(
       child: Column(
         children: [
-          Text('Weekly Health Summary'),
+          Text(
+            'Weekly Health Summary',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           ...weeklySummary.map((dayData) {
             return ListTile(
               title: Text('Heart Rate: ${dayData['heartRate']}'),
@@ -139,4 +161,3 @@ class _HealthPageState extends State<HealthPage> {
     setState(() {});
   }
 }
-

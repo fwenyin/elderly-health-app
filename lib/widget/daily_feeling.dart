@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'heading_text.dart';
+
 class DailyFeeling extends StatefulWidget {
   @override
   _DailyFeelingState createState() => _DailyFeelingState();
@@ -9,7 +11,7 @@ class DailyFeeling extends StatefulWidget {
 
 class _DailyFeelingState extends State<DailyFeeling> {
   String _currentFeeling = '';
-  String _userName = 'Name of User'; 
+  String _userName = 'Name of User';
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -25,10 +27,12 @@ class _DailyFeelingState extends State<DailyFeeling> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Hello $_userName'),
+        HeadingText('Hello $_userName'),
+        SizedBox(height: 15),
         Row(
           children: [
             Text('You feel... $_currentFeeling'),
+            Spacer(),
             ElevatedButton(
               onPressed: () {
                 // Reset the feeling when 'Change' is clicked.
@@ -45,10 +49,10 @@ class _DailyFeelingState extends State<DailyFeeling> {
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildFeelingButton('Good'),
-                  _buildFeelingButton('Normal'),
-                  _buildFeelingButton('Slightly Unwell'),
-                  _buildFeelingButton('Unwell'),
+                  _buildFeelingButton('good'),
+                  _buildFeelingButton('normal'),
+                  _buildFeelingButton('slightly unwell'),
+                  _buildFeelingButton('unwell'),
                 ],
               )
             : Container(),
@@ -56,23 +60,32 @@ class _DailyFeelingState extends State<DailyFeeling> {
     );
   }
 
-  Widget _buildFeelingButton(String feeling) {
+Widget _buildFeelingButton(String feeling) {
     return Flexible(
       fit: FlexFit.tight,
-      child: ElevatedButton(
-        onPressed: () async {
-          // Set the feeling when a button is clicked.
-          setState(() {
-            _currentFeeling = feeling;
-          });
+      child: Padding(
+        padding: const EdgeInsets.all(4.0), 
+        child: ElevatedButton(
+          onPressed: () async {
+            // Set the feeling when a button is clicked.
+            setState(() {
+              _currentFeeling = feeling;
+            });
 
-          // Save the feeling to Firestore.
-          await _saveFeelingToFirestore(feeling);
-        },
-        child: Text(feeling),
+            // Save the feeling to Firestore.
+            await _saveFeelingToFirestore(feeling);
+          },
+          child: Text(
+            feeling,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 12),
+          ),
+        ),
       ),
     );
   }
+
 
   Future<void> _saveFeelingToFirestore(String feeling) async {
     String userId = _auth.currentUser!.uid;
@@ -82,7 +95,8 @@ class _DailyFeelingState extends State<DailyFeeling> {
         .collection('users')
         .doc(userId)
         .collection('feelings')
-        .doc(DateTime.now().toIso8601String().split('T')[0]) // This will give the format 'YYYY-MM-DD' as the document ID.
+        .doc(DateTime.now().toIso8601String().split('T')[
+            0]) // This will give the format 'YYYY-MM-DD' as the document ID.
         .set({
       'feeling': feeling,
       'timestamp': FieldValue.serverTimestamp(),
@@ -90,7 +104,7 @@ class _DailyFeelingState extends State<DailyFeeling> {
   }
 
   Future<void> _fetchCurrentFeeling() async {
-    String userId = _auth.currentUser!.uid; 
+    String userId = _auth.currentUser!.uid;
 
     DocumentSnapshot snapshot = await _firestore
         .collection('users')
@@ -102,8 +116,7 @@ class _DailyFeelingState extends State<DailyFeeling> {
     if (snapshot.exists && snapshot.data() is Map<String, dynamic>) {
       Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
       setState(() {
-        _currentFeeling = data['feeling'] ??
-            '';
+        _currentFeeling = data['feeling'] ?? '';
       });
     }
   }
@@ -117,8 +130,7 @@ class _DailyFeelingState extends State<DailyFeeling> {
     if (snapshot.exists && snapshot.data() is Map<String, dynamic>) {
       Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
       setState(() {
-        _userName = data['name'] ??
-            'Name of User';
+        _userName = data['name'] ?? 'Name of User';
       });
     }
   }

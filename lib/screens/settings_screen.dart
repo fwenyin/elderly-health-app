@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../widget/app_bar.dart';
 import 'login_screen.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -25,23 +26,57 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-      ),
+      appBar: CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Name: $_userName'),
-            Text('Age: $_userAge'),
-            ElevatedButton(
-              onPressed: _editDetails,
-              child: Text('Edit Details'),
+            Row(
+              children: [
+                Icon(Icons.person, size: 55.0),
+                SizedBox(width: 30),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(_userName ?? 'Loading name...',
+                          style: TextStyle(fontSize: 18)),
+                      SizedBox(height: 7),   
+                      Text('Age: ${_userAge ?? 'Loading age...'}'),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: _logout,
-              child: Text('Logout'),
+            Spacer(), // This will push the row of buttons to the end of the available space.
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: ElevatedButton(
+                      onPressed: _editDetails,
+                      child: Text('Edit Details'),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8.0),
+                    child: ElevatedButton(
+                      onPressed: _logout,
+                      /*
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red, // This sets the background color
+                      ),
+                      */
+                      child: Text('Logout'),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -51,7 +86,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> _fetchUserDetails() async {
     String userId = _auth.currentUser!.uid;
-    DocumentSnapshot snapshot = await _firestore.collection('users').doc(userId).get();
+    DocumentSnapshot snapshot =
+        await _firestore.collection('users').doc(userId).get();
 
     if (snapshot.exists && snapshot.data() is Map<String, dynamic>) {
       Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;

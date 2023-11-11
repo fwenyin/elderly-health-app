@@ -139,7 +139,7 @@ class _FoodPageState extends State<FoodPage> {
     return Scaffold(
       appBar: CustomAppBar(),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(20.0),
         child: Column(
           children: [
             Row(
@@ -168,7 +168,13 @@ class _FoodPageState extends State<FoodPage> {
               ],
             ),
             SizedBox(height: 20),
-            Text("Today's Food"),
+            Text(
+              "Today's Food",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 5),
             Expanded(
               flex: 5,
               child: StreamBuilder<List<Food>>(
@@ -199,7 +205,13 @@ class _FoodPageState extends State<FoodPage> {
               ),
             ),
             SizedBox(height: 20),
-            Text("Learn some Recipes!"),
+            Text(
+              "Learn some Recipes!",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 5),
             Row(
               children: [
                 Expanded(
@@ -224,7 +236,6 @@ class _FoodPageState extends State<FoodPage> {
                 ),
               ],
             ),
-
             if (_youtubeResults != null && _youtubeResults!.isNotEmpty) ...[
               SizedBox(height: 20),
               Expanded(
@@ -233,7 +244,7 @@ class _FoodPageState extends State<FoodPage> {
                   itemCount: _youtubeResults!.length,
                   itemBuilder: (context, index) {
                     print('Building item $index');
-                    var video = _youtubeResults![index];
+                    var video = _youtubeResults[index];
                     return ListTile(
                       leading: Image.network(video['thumbnail']),
                       title: Text(video['title']),

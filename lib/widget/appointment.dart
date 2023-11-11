@@ -40,6 +40,7 @@ class _AppointmentOverviewState extends State<AppointmentOverview> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('You have no appointments.'),
+                          /*
                           SizedBox(height: 10),
                           ElevatedButton(
                             onPressed: () {
@@ -49,6 +50,7 @@ class _AppointmentOverviewState extends State<AppointmentOverview> {
                             },
                             child: Text('Add Appointment'),
                           )
+                          */
                         ],
                       ),
                     );
@@ -81,6 +83,7 @@ class _AppointmentOverviewState extends State<AppointmentOverview> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        mini: true,
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context).push(

@@ -127,7 +127,13 @@ class _ExplorePageState extends State<ExplorePage> {
               ],
             ),
             SizedBox(height: 20),
-            Text("Movement this Week"),
+            Text(
+              "Movement this Week",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20),
             Expanded(
               child: StreamBuilder<List<Activity>>(
                 stream: _getActivities(),
@@ -155,20 +161,27 @@ class _ExplorePageState extends State<ExplorePage> {
               ),
             ),
             SizedBox(height: 20),
-            Text("Where can i exercise?"),
+            Text(
+              "Where can i exercise?",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20),
             Row(
               children: [
                 Expanded(
                   child: TextFormField(
                     controller: _mapSearchController,
-                    decoration: InputDecoration(labelText: 'Enter your postal code'),
+                    decoration:
+                        InputDecoration(labelText: 'Enter your postal code'),
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     try {
-                      final results = await searchGoogleMaps(
-                          _mapSearchController.text);
+                      final results =
+                          await searchGoogleMaps(_mapSearchController.text);
                       setState(() {
                         _googleResults = results;
                       });
@@ -180,7 +193,6 @@ class _ExplorePageState extends State<ExplorePage> {
                 ),
               ],
             ),
-
             if (_googleResults != null && _googleResults.isNotEmpty) ...[
               SizedBox(height: 20),
               Expanded(
