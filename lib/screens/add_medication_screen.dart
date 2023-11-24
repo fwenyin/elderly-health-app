@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:namer_app/l10n/app_localizations.dart';
+
 
 import '../model/medication_model.dart';
 import '../widget/app_bar.dart';
@@ -57,20 +59,34 @@ class _MedicationScreenState extends State<MedicationScreen> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Medication Name'),
+              decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.medicationName),
             ),
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'When to eat?'),
+              decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.whenToEat),
               items: [
                 DropdownMenuItem(
-                    child: Text("Thrice a day"), value: "Thrice a day"),
+                    child: Text(AppLocalizations.of(context)!.thrice),
+                    value: "Thrice a day"),
                 DropdownMenuItem(
-                    child: Text("Twice a day"), value: "Twice a day"),
-                DropdownMenuItem(child: Text("Daily"), value: "Daily"),
-                DropdownMenuItem(child: Text("Weekly"), value: "Weekly"),
-                DropdownMenuItem(child: Text("Biweekly"), value: "Biweekly"),
-                DropdownMenuItem(child: Text("Monthly"), value: "Monthly"),
-                DropdownMenuItem(child: Text("Others"), value: "Others"),
+                    child: Text(AppLocalizations.of(context)!.twice),
+                    value: "Twice a day"),
+                DropdownMenuItem(
+                    child: Text(AppLocalizations.of(context)!.daily),
+                    value: "Daily"),
+                DropdownMenuItem(
+                    child: Text(AppLocalizations.of(context)!.weekly),
+                    value: "Weekly"),
+                DropdownMenuItem(
+                    child: Text(AppLocalizations.of(context)!.biweekly),
+                    value: "Biweekly"),
+                DropdownMenuItem(
+                    child: Text(AppLocalizations.of(context)!.monthly),
+                    value: "Monthly"),
+                DropdownMenuItem(
+                    child: Text(AppLocalizations.of(context)!.others),
+                    value: "Others"),
               ],
               onChanged: (String? value) {
                 if (value != null) {
@@ -94,11 +110,13 @@ class _MedicationScreenState extends State<MedicationScreen> {
             if (_isOthersSelected)
               TextFormField(
                 controller: _dosageController,
-                decoration: InputDecoration(labelText: 'Specify when to eat (eg. 3 times a week)'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.specifyEat),
               ),
             TextFormField(
               controller: _frequencyController,
-              decoration: InputDecoration(labelText: 'Number of pills'),
+              decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.numberOfPills),
               keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.digitsOnly
@@ -106,7 +124,7 @@ class _MedicationScreenState extends State<MedicationScreen> {
             ),
             SizedBox(height: 10.0),
             CheckboxListTile(
-              title: Text('After Meal'),
+              title: Text(AppLocalizations.of(context)!.afterMeal),
               value: afterMeal,
               onChanged: (bool? value) {
                 setState(() {
@@ -117,7 +135,7 @@ class _MedicationScreenState extends State<MedicationScreen> {
             SizedBox(height: 50.0),
             ElevatedButton(
               onPressed: _saveMedication,
-              child: Text("Save Changes"),
+              child: Text(AppLocalizations.of(context)!.saveChanges),
             ),
           ],
         ),

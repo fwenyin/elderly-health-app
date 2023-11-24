@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-
+import 'package:namer_app/l10n/app_localizations.dart';
 import '../widget/app_bar.dart';
 import 'family_screen.dart';
 
@@ -49,6 +49,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: CustomAppBar(),
       body: Padding(
@@ -58,9 +59,9 @@ class _AddFriendPageState extends State<AddFriendPage> {
             IntlPhoneField(
               controller: _phoneController,
               initialCountryCode: 'SG',
-              decoration: const InputDecoration(
-                hintText: 'Friend\'s Phone Number',
-                labelText: 'Phone',
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.friendPhone,
+                labelText: AppLocalizations.of(context)!.phone,
                 border: OutlineInputBorder(),
               ),
               onChanged: (val) {
@@ -70,7 +71,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _addFriend,
-              child: Text('Send Request'),
+              child: Text(AppLocalizations.of(context)!.sendRequest),
             ),
           ],
         ),

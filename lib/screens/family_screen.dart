@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import '../l10n/app_localizations.dart';
 import '../widget/app_bar.dart';
 import '../widget/heading_text.dart';
 import '../widget/navigation_bar.dart';
@@ -27,7 +27,7 @@ class _FamilyPageState extends State<FamilyPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeadingText("My Family"),
+              HeadingText(AppLocalizations.of(context)!.myFamily),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -40,7 +40,7 @@ class _FamilyPageState extends State<FamilyPage> {
                             builder: (context) => AddFriendPage()),
                       );
                     },
-                    child: Text("Add Friend"),
+                    child: Text(AppLocalizations.of(context)!.addFriend),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -50,7 +50,7 @@ class _FamilyPageState extends State<FamilyPage> {
                             builder: (context) => FriendRequestPage()),
                       );
                     },
-                    child: Text("Friend Request"),
+                    child: Text(AppLocalizations.of(context)!.friendRequests),
                   ),
                 ],
               ),
@@ -134,6 +134,6 @@ class _FamilyPageState extends State<FamilyPage> {
       return 'Feeling ${data['feeling']}!';
     }
 
-    return 'No recent updates :(';
+    return AppLocalizations.of(context)!.noRecentUpdates;
   }
 }

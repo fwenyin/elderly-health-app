@@ -33,9 +33,9 @@ class _LoginPageState extends State<LoginPage> {
             .doc(userCredential.user?.uid)
             .get();
 
-        if (!userDoc.exists ||
-            !userDoc.data()!.containsKey('name') ||
-            !userDoc.data()!.containsKey('age')) {
+        if (userDoc.exists &&
+            userDoc.data()!.containsKey('name') &&
+            userDoc.data()!.containsKey('age')) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => LoginDetailsPage()),
@@ -70,14 +70,15 @@ class _LoginPageState extends State<LoginPage> {
         .doc(userCredential.user?.uid)
         .get();
 
-    if (!userDoc.exists ||
-        !userDoc.data()!.containsKey('name') ||
-        !userDoc.data()!.containsKey('age')) {
+    if (userDoc.exists &&
+        userDoc.data()!.containsKey('name') &&
+        userDoc.data()!.containsKey('age')) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginDetailsPage()),
       );
     } else {
+      
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),

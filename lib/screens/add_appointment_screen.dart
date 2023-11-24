@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../l10n/app_localizations.dart';
 import '../model/appointment_model.dart';
 import '../widget/app_bar.dart';
 
@@ -47,11 +49,11 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           children: [
             TextFormField(
               controller: _locationController,
-              decoration: InputDecoration(labelText: 'Location'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.location),
             ),
             TextFormField(
               controller: _departmentController,
-              decoration: InputDecoration(labelText: 'Department'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.department),
             ),
             SizedBox(height: 10.0),
             ListTile(
@@ -77,7 +79,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
             SizedBox(height: 50.0),
             ElevatedButton(
               onPressed: _saveAppointment,
-              child: Text("Save Changes"),
+              child: Text(AppLocalizations.of(context)!.saveChanges),
             ),
           ],
         ),

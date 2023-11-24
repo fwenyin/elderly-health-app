@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../l10n/app_localizations.dart';
 import '../model/food_model.dart';
 import '../widget/app_bar.dart';
 import '../widget/category_tag.dart';
@@ -147,16 +148,16 @@ class _FoodPageState extends State<FoodPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _foodController,
-                    decoration: InputDecoration(labelText: 'I ate'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)!.iAte),
                   ),
                 ),
                 DropdownButton<String>(
                   value: _selectedMeal,
                   items: [
                     DropdownMenuItem(
-                        child: Text("Breakfast"), value: "Breakfast"),
-                    DropdownMenuItem(child: Text("Lunch"), value: "Lunch"),
-                    DropdownMenuItem(child: Text("Dinner"), value: "Dinner")
+                        child: Text(AppLocalizations.of(context)!.breakfast), value: "Breakfast"),
+                    DropdownMenuItem(child: Text(AppLocalizations.of(context)!.lunch), value: "Lunch"),
+                    DropdownMenuItem(child: Text(AppLocalizations.of(context)!.dinner), value: "Dinner")
                   ],
                   onChanged: (String? newValue) {
                     setState(() {
@@ -164,12 +165,12 @@ class _FoodPageState extends State<FoodPage> {
                     });
                   },
                 ),
-                ElevatedButton(onPressed: _addFood, child: Text("ADD"))
+                ElevatedButton(onPressed: _addFood, child: Text(AppLocalizations.of(context)!.add))
               ],
             ),
             SizedBox(height: 20),
             Text(
-              "Today's Food",
+              AppLocalizations.of(context)!.todaysFood,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -185,7 +186,7 @@ class _FoodPageState extends State<FoodPage> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Text('No foods added yet.');
+                    return Text(AppLocalizations.of(context)!.noFood);
                   } else {
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
@@ -195,7 +196,7 @@ class _FoodPageState extends State<FoodPage> {
                         return ListTile(
                           title: Text(food.name),
                           subtitle:
-                              Text('${food.kcal} kcal, ${food.carbs} Carbs'),
+                              Text('${food.kcal} ${AppLocalizations.of(context)!.kcal}, ${food.carbs} ${AppLocalizations.of(context)!.carbs}'),
                           trailing: CategoryTag(food.mealType),
                         );
                       },
@@ -206,7 +207,7 @@ class _FoodPageState extends State<FoodPage> {
             ),
             SizedBox(height: 20),
             Text(
-              "Learn some Recipes!",
+              AppLocalizations.of(context)!.learnRecipe,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -217,7 +218,7 @@ class _FoodPageState extends State<FoodPage> {
                 Expanded(
                   child: TextFormField(
                     controller: _recipeSearchController,
-                    decoration: InputDecoration(labelText: 'I want to make'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)!.wantToMake),
                   ),
                 ),
                 ElevatedButton(
@@ -232,7 +233,7 @@ class _FoodPageState extends State<FoodPage> {
                       print('Error searching YouTube: $e');
                     }
                   },
-                  child: Text("SEARCH"),
+                  child: Text(AppLocalizations.of(context)!.search),
                 ),
               ],
             ),

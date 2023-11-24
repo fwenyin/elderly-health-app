@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../l10n/app_localizations.dart';
 import '../widget/app_bar.dart';
 import '../widget/heading_text.dart';
 import '../widget/navigation_bar.dart';
@@ -106,7 +107,7 @@ Widget build(BuildContext context) {
       child: Column(
         children: [
           Text(
-            'Weekly Health Summary',
+            AppLocalizations.of(context)!.healthSummary,
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),

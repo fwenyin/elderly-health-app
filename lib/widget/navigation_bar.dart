@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
+
 class CustomNavigationBar extends StatelessWidget {
   final int currentIndex;
 
@@ -26,6 +28,9 @@ class CustomNavigationBar extends StatelessWidget {
           case 4:
             Navigator.pushReplacementNamed(context, '/explore');
             break;
+          case 5:
+            Navigator.pushReplacementNamed(context, '/ask');
+            break;
         }
       },
       unselectedItemColor: Colors.black,
@@ -34,25 +39,28 @@ class CustomNavigationBar extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.family_restroom, color: Colors.black),
-          label: 'FAMILY',
+          label: AppLocalizations.of(context)!.family,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.local_hospital, color: Colors.black),
-          label: 'HEALTH',
+          label: AppLocalizations.of(context)!.health,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.home, color: Colors.black),
-          label: 'HOME',
+          label: AppLocalizations.of(context)!.home,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.fastfood, color: Colors.black),
-          label: 'FOOD',
+          label: AppLocalizations.of(context)!.food,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.explore, color: Colors.black),
-          label: 'EXPLORE',
+          label: AppLocalizations.of(context)!.explore,
         ),
-
+        BottomNavigationBarItem(
+          icon: Icon(Icons.question_answer, color: Colors.black),
+          label: AppLocalizations.of(context)!.ask,
+        ),
       ],
     );
   }

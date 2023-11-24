@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../l10n/app_localizations.dart';
 import '../model/activity_model.dart';
 import '../widget/app_bar.dart';
 import '../widget/navigation_bar.dart';
@@ -22,16 +23,21 @@ class _ExplorePageState extends State<ExplorePage> {
   int _selectedDuration = 30;
   List<Map<String, dynamic>> _googleResults = [];
 
-  Map<int, String> durationMap = {
-    30: "30 minutes",
-    60: "1 hour",
-    90: "1.5 hours",
-    120: "2 hours",
-    150: "2.5 hours",
-    180: "3 hours",
-    210: "3.5 hours",
-    240: "4 hours",
-  };
+  String formatDuration(BuildContext context, int duration) {
+    var t = AppLocalizations.of(context)!;
+
+    if (duration < 60) {
+      return '${duration} ${t.minutes}';
+    } else if (duration == 60) {
+      return '1 ${t.hour}';
+    } else {
+      int hours = duration ~/ 60;
+      int minutes = duration % 60;
+      String hourString =
+          hours > 1 ? '${hours} ${t.hours}' : '${hours} ${t.hour}';
+      return minutes > 0 ? '$hourString ${minutes} ${t.minutes}' : hourString;
+    }
+  }
 
   _addActivity() async {
     String userId = _auth.currentUser!.uid;
@@ -101,21 +107,21 @@ class _ExplorePageState extends State<ExplorePage> {
                 Expanded(
                   child: TextFormField(
                     controller: _activityController,
-                    decoration: InputDecoration(labelText: 'I did'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)!.iDid),
                   ),
                 ),
                 SizedBox(width: 10),
                 DropdownButton<int>(
                   value: _selectedDuration,
                   items: [
-                    DropdownMenuItem(child: Text("30 minutes"), value: 30),
-                    DropdownMenuItem(child: Text("1 hour"), value: 60),
-                    DropdownMenuItem(child: Text("1.5 hours"), value: 90),
-                    DropdownMenuItem(child: Text("2 hours"), value: 120),
-                    DropdownMenuItem(child: Text("2.5 hours"), value: 150),
-                    DropdownMenuItem(child: Text("3 hours"), value: 180),
-                    DropdownMenuItem(child: Text("3.5 hours"), value: 210),
-                    DropdownMenuItem(child: Text("4 hours"), value: 240),
+                    DropdownMenuItem(child: Text("30 " + AppLocalizations.of(context)!.minutes), value: 30),
+                    DropdownMenuItem(child: Text("1 " + AppLocalizations.of(context)!.hour), value: 60),
+                    DropdownMenuItem(child: Text("1.5 " + AppLocalizations.of(context)!.hours), value: 90),
+                    DropdownMenuItem(child: Text("2 " + AppLocalizations.of(context)!.hours), value: 120),
+                    DropdownMenuItem(child: Text("2.5 " + AppLocalizations.of(context)!.hours), value: 150),
+                    DropdownMenuItem(child: Text("3 " + AppLocalizations.of(context)!.hours), value: 180),
+                    DropdownMenuItem(child: Text("3.5 " + AppLocalizations.of(context)!.hours), value: 210),
+                    DropdownMenuItem(child: Text("4 " + AppLocalizations.of(context)!.hours), value: 240),
                   ],
                   onChanged: (int? newValue) {
                     setState(() {
@@ -123,12 +129,12 @@ class _ExplorePageState extends State<ExplorePage> {
                     });
                   },
                 ),
-                ElevatedButton(onPressed: _addActivity, child: Text("ADD"))
+                ElevatedButton(onPressed: _addActivity, child: Text(AppLocalizations.of(context)!.add))
               ],
             ),
             SizedBox(height: 20),
             Text(
-              "Movement this Week",
+              AppLocalizations.of(context)!.movement,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -143,7 +149,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Text('No activities added yet.');
+                    return Text(AppLocalizations.of(context)!.noActivities);
                   } else {
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
@@ -151,7 +157,7 @@ class _ExplorePageState extends State<ExplorePage> {
                         Activity activity = snapshot.data![index];
                         return ListTile(
                           title: Text(activity.name),
-                          subtitle: Text('${durationMap[activity.duration]}'),
+                          subtitle: Text(formatDuration(context, activity.duration)),
                           // You can add more details or icons here
                         );
                       },
@@ -162,7 +168,7 @@ class _ExplorePageState extends State<ExplorePage> {
             ),
             SizedBox(height: 20),
             Text(
-              "Where can i exercise?",
+              AppLocalizations.of(context)!.whereExercise,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -174,7 +180,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   child: TextFormField(
                     controller: _mapSearchController,
                     decoration:
-                        InputDecoration(labelText: 'Enter your postal code'),
+                        InputDecoration(labelText: AppLocalizations.of(context)!.postalCode),
                   ),
                 ),
                 ElevatedButton(
@@ -189,7 +195,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       print('Error searching YouTube: $e');
                     }
                   },
-                  child: Text("SEARCH"),
+                  child: Text(AppLocalizations.of(context)!.search),
                 ),
               ],
             ),

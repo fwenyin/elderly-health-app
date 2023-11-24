@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../l10n/app_localizations.dart';
 import '../widget/app_bar.dart';
 import '../widget/heading_text.dart';
 
@@ -23,7 +24,7 @@ class _FriendRequestPageState extends State<FriendRequestPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HeadingText("Friend Requests"),
+            HeadingText(AppLocalizations.of(context)!.friendRequests),
             SizedBox(height: 20),
             StreamBuilder(
               stream: _firestore
@@ -118,7 +119,7 @@ class _FriendRequestPageState extends State<FriendRequestPage> {
                   return ListView(children: requestWidgets);
                 }
                 else {
-                  return Center(child: Text('No friend requests :('));
+                  return Center(child: Text(AppLocalizations.of(context)!.noFriendRequests));
                 }
               },
             ),

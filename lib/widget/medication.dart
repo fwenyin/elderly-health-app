@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../model/medication_model.dart';
 import '../screens/add_medication_screen.dart';
 
@@ -24,7 +25,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(
-              "Medications Overview",
+              AppLocalizations.of(context)!.medicationsOverview,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -48,7 +49,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('You have no medications added.'),
+                              Text(AppLocalizations.of(context)!.noMedication),
                               /*
                               ElevatedButton(
                                 onPressed: () {
@@ -123,7 +124,7 @@ class _MedicationOverviewState extends State<MedicationOverview> {
         ),
       ),
       subtitle: Text(
-          'Dosage: ${medication.frequency} \n${medication.afterMeal ? "After meal" : "Before meal"}'),
+          '${AppLocalizations.of(context)!.dosage}: ${medication.frequency} \n${medication.afterMeal ? AppLocalizations.of(context)!.afterMeal : AppLocalizations.of(context)!.beforeMeal}'),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

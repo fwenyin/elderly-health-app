@@ -1,1 +1,1 @@
-{"inputs":[],"outputs":[]}
+{"inputs":["/Users/wenyin/Documents/flutter/packages/flutter_tools/lib/src/build_system/targets/localizations.dart","/Users/wenyin/Desktop/elderly-health-app/l10n.yaml","/Users/wenyin/Desktop/elderly-health-app/lib/l10n/intl_en.arb","/Users/wenyin/Desktop/elderly-health-app/lib/l10n/intl_zh.arb"],"outputs":["/Users/wenyin/Desktop/elderly-health-app/lib/l10n/app_localizations_en.dart","/Users/wenyin/Desktop/elderly-health-app/lib/l10n/app_localizations_zh.dart","/Users/wenyin/Desktop/elderly-health-app/lib/l10n/app_localizations.dart"]}

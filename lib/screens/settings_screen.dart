@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:namer_app/l10n/app_localizations.dart';
+import 'package:namer_app/main.dart';
 
 import '../widget/app_bar.dart';
 import 'login_screen.dart';
@@ -13,6 +15,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   String? _userName;
   String? _userAge;
+  String? _selectedLanguage;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -25,6 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: CustomAppBar(),
       body: Padding(
@@ -43,16 +47,35 @@ class _SettingsPageState extends State<SettingsPage> {
                       Text(_userName ?? 'Loading name...',
                           style: TextStyle(fontSize: 18)),
                       SizedBox(height: 7),   
-                      Text('Age: ${_userAge ?? 'Loading age...'}'),
+                      Text('${AppLocalizations.of(context)!.age}: ${_userAge ?? 'Loading age...'}'),
                     ],
                   ),
                 ),
               ],
             ),
+            SizedBox(height: 20),
+            DropdownButton<String>(
+              value: _selectedLanguage,
+              hint: Text(AppLocalizations.of(context)!.selectLanguage),
+              items: [
+                DropdownMenuItem(child: Text("English"), value: "en"),
+                DropdownMenuItem(child: Text("中文"), value: "zh"),
+              ],
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedLanguage = newValue;
+                });
+                if (newValue != null) {
+                  MyApp.setLocale(context, Locale(newValue));
+                }
+              },
+            ),
+
             Spacer(), // This will push the row of buttons to the end of the available space.
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                /*
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(right: 8.0),
@@ -62,17 +85,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ),
+                */
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(left: 8.0),
                     child: ElevatedButton(
                       onPressed: _logout,
-                      /*
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red, // This sets the background color
-                      ),
-                      */
-                      child: Text('Logout'),
+                      child: Text(AppLocalizations.of(context)!.logout),
                     ),
                   ),
                 ),

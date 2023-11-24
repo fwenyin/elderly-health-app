@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:namer_app/l10n/app_localizations.dart';
 
 import '../model/activity_model.dart';
 import '../model/food_model.dart';
@@ -21,16 +22,21 @@ class _FriendDetailPageState extends State<FriendDetailPage> {
   String? _friendAge;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Map<int, String> durationMap = {
-    30: "30 minutes",
-    60: "1 hour",
-    90: "1.5 hours",
-    120: "2 hours",
-    150: "2.5 hours",
-    180: "3 hours",
-    210: "3.5 hours",
-    240: "4 hours",
-  };
+  String formatDuration(BuildContext context, int duration) {
+    var t = AppLocalizations.of(context)!;
+
+    if (duration < 60) {
+      return '${duration} ${t.minutes}';
+    } else if (duration == 60) {
+      return '1 ${t.hour}';
+    } else {
+      int hours = duration ~/ 60;
+      int minutes = duration % 60;
+      String hourString =
+          hours > 1 ? '${hours} ${t.hours}' : '${hours} ${t.hour}';
+      return minutes > 0 ? '$hourString ${minutes} ${t.minutes}' : hourString;
+    }
+  }
 
   @override
   void initState() {
@@ -60,12 +66,12 @@ class _FriendDetailPageState extends State<FriendDetailPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (_friendName != null) Text('Name: $_friendName'),
+            if (_friendName != null) Text('${AppLocalizations.of(context)!.name}: $_friendName'),
             SizedBox(height: 10),
-            if (_friendAge != null) Text('Age: $_friendAge'),
+            if (_friendAge != null) Text(AppLocalizations.of(context)!.age + ': $_friendAge'),
             SizedBox(height: 50),
             Text(
-              "Today's Food",
+              AppLocalizations.of(context)!.todaysFood,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -81,7 +87,7 @@ class _FriendDetailPageState extends State<FriendDetailPage> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No foods added yet'));
+                    return Center(child: Text(AppLocalizations.of(context)!.noFood));
                   } else {
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
@@ -91,7 +97,8 @@ class _FriendDetailPageState extends State<FriendDetailPage> {
                         return ListTile(
                           title: Text(food.name),
                           subtitle:
-                              Text('${food.kcal} kcal, ${food.carbs} Carbs'),
+                              Text(
+                              '${food.kcal} ${AppLocalizations.of(context)!.kcal}, ${food.carbs} ${AppLocalizations.of(context)!.carbs}'),
                           trailing: CategoryTag(food.mealType),
                         );
                       },
@@ -102,7 +109,7 @@ class _FriendDetailPageState extends State<FriendDetailPage> {
             ),
             SizedBox(height: 20),
             Text(
-              "Today's Movements",
+             AppLocalizations.of(context)!.movement,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -117,7 +124,7 @@ class _FriendDetailPageState extends State<FriendDetailPage> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No activities added yet.'));
+                    return Center(child: Text(AppLocalizations.of(context)!.noActivities));
                   } else {
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
@@ -125,8 +132,7 @@ class _FriendDetailPageState extends State<FriendDetailPage> {
                         Activity activity = snapshot.data![index];
                         return ListTile(
                           title: Text(activity.name),
-                          subtitle: Text('${durationMap[activity.duration]}'),
-                          // You can add more details or icons here
+                          subtitle: Text(formatDuration(context, activity.duration))
                         );
                       },
                     );

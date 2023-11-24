@@ -8,7 +8,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('lao ren app'),
+      title: Text('Elderly Companion App'),
       actions: [
         IconButton(
           icon: Icon(Icons.settings),

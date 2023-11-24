@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../model/appointment_model.dart';
 import '../screens/add_appointment_screen.dart';
 
@@ -21,7 +22,7 @@ class _AppointmentOverviewState extends State<AppointmentOverview> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(
-              "Appointments Overview",
+              AppLocalizations.of(context)!.appointmentsOverview,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -39,7 +40,7 @@ class _AppointmentOverviewState extends State<AppointmentOverview> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('You have no appointments.'),
+                          Text(AppLocalizations.of(context)!.noAppointment),
                           /*
                           SizedBox(height: 10),
                           ElevatedButton(
@@ -105,7 +106,7 @@ class _AppointmentOverviewState extends State<AppointmentOverview> {
         ),
       ),
       subtitle: Text(
-          'Department: ${appointment.department} \nDate: ${appointment.datetime.toString().split(" ")[0]}'),
+          '${AppLocalizations.of(context)!.department}: ${appointment.department} \n${AppLocalizations.of(context)!.date}: ${appointment.datetime.toString().split(" ")[0]}'),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
