@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.flutter_application_1.app-mergeDebugResources-18:/values-pt/values-pt.xml",
+            "outputFile": "com.example.flutter_application_1.app-mergeDebugResources-30:/values-pt/values-pt.xml",
             "map": [
                 {
                     "source": "/Users/wenyin/.gradle/caches/transforms-3/74a423814756f5c98dcc8dbe91394e26/transformed/core-1.10.1/res/values-pt/values-pt.xml",

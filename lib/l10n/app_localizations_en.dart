@@ -32,7 +32,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get heartrate => 'Heart Rate';
 
   @override
-  String get bloodPressure => 'Blood Pressure';
+  String get bloodPressure => 'Blood Pressure (Sys/Dia mmHg)';
 
   @override
   String get bloodSugar => 'Blood Sugar';
@@ -182,7 +182,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get age => 'Age';
 
   @override
-  String get specifyEat => 'Specify when to eat (eg. 3 times a week)';
+  String get specifyEat => 'When to eat?';
 
   @override
   String get friendPhone => 'Friend\'s Phone Number';
@@ -216,4 +216,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ask => 'ASK';
+
+  @override
+  String get chatbotDefault => 'I am a health advisor bot that can help to provide advice according to your medical symptoms. However, this is not a foolproof professional advice and do seek timely medical attention when necessary. What symptoms do you have today?';
+
+  @override
+  String get enterSymptoms => 'Enter your symptoms';
+
+  @override
+  String get bot => 'Health Bot';
+
+  @override
+  String get changePicture => 'Change Profile Picture';
+
+  @override
+  String get weight => 'Weight (kg)';
+
+  @override
+  String get height => 'Height (cm)';
+
+  @override
+  String get enterName => 'Please enter your name';
+
+  @override
+  String get enterAge => 'Please enter your age';
+
+  @override
+  String get enterWeight => 'Please enter your weight';
+
+  @override
+  String get enterHeight => 'Please enter your height';
+
+  @override
+  String get editDetails => 'Edit Details';
+
+  @override
+  String get logMeasurement => 'Log your daily measurements!';
+
+  @override
+  String get pulse => 'Pulse Rate';
+
+  @override
+  String get systolic => 'Systolic';
+
+  @override
+  String get diastolic => 'Diastolic';
+
+  @override
+  String get logData => 'Log Data';
+
+  @override
+  String get bmi => 'Current BMI';
+
+  @override
+  String get pulsebpm => 'Pulse Rate (bpm)';
 }

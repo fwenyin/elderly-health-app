@@ -32,7 +32,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get heartrate => '心率';
 
   @override
-  String get bloodPressure => '血压';
+  String get bloodPressure => '血压（收缩压/舒张压mmHg）';
 
   @override
   String get bloodSugar => '血糖';
@@ -182,7 +182,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get age => '年龄';
 
   @override
-  String get specifyEat => '指定进食时间（例如，一周3次';
+  String get specifyEat => '什么时候吃';
 
   @override
   String get friendPhone => '朋友的电话号码';
@@ -216,4 +216,58 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get ask => '询问';
+
+  @override
+  String get chatbotDefault => '我是一个健康顾问机器人，可以根据您的医疗症状提供建议。然而，这不是万无一失的专业建议，在必要时请及时就医。您今天有什么症状？';
+
+  @override
+  String get enterSymptoms => '输入您的症状';
+
+  @override
+  String get bot => '健康机器人';
+
+  @override
+  String get changePicture => '更改头像';
+
+  @override
+  String get weight => '体重（公斤）';
+
+  @override
+  String get height => '身高（厘米）';
+
+  @override
+  String get enterName => '请输入您的姓名';
+
+  @override
+  String get enterAge => '请输入您的年龄';
+
+  @override
+  String get enterWeight => '请输入您的体重';
+
+  @override
+  String get enterHeight => '请输入您的身高';
+
+  @override
+  String get editDetails => '编辑详情';
+
+  @override
+  String get logMeasurement => '记录您的每日测量值！';
+
+  @override
+  String get pulse => '脉搏率';
+
+  @override
+  String get systolic => '收缩压';
+
+  @override
+  String get diastolic => '舒张压';
+
+  @override
+  String get logData => '记录数据';
+
+  @override
+  String get bmi => '当前BMI';
+
+  @override
+  String get pulsebpm => '脉搏率（次/分钟）';
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'dart:math';
-import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
+import '../l10n/app_localizations.dart';
 import '../widget/app_bar.dart';
 import '../widget/navigation_bar.dart';
 
@@ -15,46 +16,79 @@ class HealthChatbotPage extends StatefulWidget {
 
 class _HealthChatbotPageState extends State<HealthChatbotPage> {
   final TextEditingController _symptomController = TextEditingController();
-  String _diagnosis = '';
+  List<Map<String, String>> _messages = [];
   bool _isLoading = false;
   List<List<String>> _dataset = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadDataset();
-  }
-
-  Future<void> _loadDataset() async {
-    _dataset = await readCsvFile('lib/data/preprocessed_medical_kb.csv');
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: _symptomController,
-              decoration: InputDecoration(
-                labelText: 'Enter your symptoms',
-                border: OutlineInputBorder(),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  var message = _messages[index];
+                  bool isBot = message["sender"] == "bot";
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: isBot
+                          ? CrossAxisAlignment.start
+                          : CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          isBot ? "Health Bot" : "You",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: isBot ? Colors.blue : Colors.green,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 5),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: isBot ? Colors.blue[100] : Colors.green[100],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            message["text"]!,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
-            ElevatedButton(
-              onPressed: _getDiagnosis,
-              child: Text('Ask'),
-            ),
-            SizedBox(height: 20),
-            _isLoading
-                ? CircularProgressIndicator()
-                : Text(_diagnosis.isNotEmpty
-                    ? _diagnosis
-                    : 'Your diagnosis will appear here.'),
+            Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _symptomController,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.enterSymptoms,
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                _isLoading
+                    ? CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: _getDiagnosis,
+                        child: Text(AppLocalizations.of(context)!.ask),
+                      ),
+              ],
+            ),),
           ],
         ),
       ),
@@ -62,22 +96,37 @@ class _HealthChatbotPageState extends State<HealthChatbotPage> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _loadDataset();
+    _addInitialBotMessage();
+  }
+
+  void _addInitialBotMessage() {
+    _messages.add({
+      "sender": "bot",
+      "text":
+          "I am a health advisor bot that can help to provide advice according to your medical symptoms. However, this is not a foolproof professional advice and do seek timely medical attention when necessary. What symptoms do you have today?"
+    });
+  }
+
+  Future<void> _loadDataset() async {
+    _dataset = await readCsvFile('lib/data/preprocessed_medical_kb.csv');
+  }
+
   // Function to read CSV file and return a list of symptom and diagnosis
   Future<List<List<String>>> readCsvFile(String filePath) async {
-    
     final input = await rootBundle.loadString(filePath);
     final fields = const CsvToListConverter()
         .convert(input, fieldDelimiter: ',', eol: '\n');
-    //print(fields.skip(1).first);
 
     // Skip the header row and map the rest to a list of strings
     List<List<String>> symptomDiagnosis = fields.skip(1).map((e) {
       String symptoms = e[4];
-      //print(symptoms);
       String diagnosis = e[2];
       return [symptoms, diagnosis];
     }).toList();
-    //print(symptomDiagnosis);
     return symptomDiagnosis;
   }
 
@@ -94,7 +143,6 @@ class _HealthChatbotPageState extends State<HealthChatbotPage> {
       String userSymptoms, List<List<String>> dataset) async {
     // Preprocess user symptoms
     List<String> userSymptomsTokens = preprocessSymptoms(userSymptoms);
-    //print(dataset);
     // Create a set of all unique tokens
     Set<String> vocabulary = userSymptomsTokens.toSet();
     for (var entry in dataset) {
@@ -177,10 +225,42 @@ class _HealthChatbotPageState extends State<HealthChatbotPage> {
       _symptomController.text,
       _dataset,
     );
+
     setState(() {
-      _diagnosis = diagnosis;
+      _messages.add({
+        "sender": "user",
+        "text": _symptomController.text,
+      });
+      _messages.add({
+        "sender": "bot",
+        "text": 'I am sorry to hear that. This is what you can do: \n$diagnosis',
+      });
       _isLoading = false;
     });
+
+    _symptomController.clear();
+  }
+
+  Future<String> translateText(
+      String text, String sourceLang, String targetLang) async {
+    final response = await http.post(
+      Uri.parse("https://libretranslate.com/translate"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "q": text,
+        "source": sourceLang,
+        "target": targetLang,
+        "format": "text",
+        "api_key": "" // If you have an API key, include it here
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+      return jsonResponse['translatedText'];
+    } else {
+      throw Exception('Failed to translate text');
+    }
   }
 
   @override

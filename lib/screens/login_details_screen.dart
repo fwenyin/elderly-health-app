@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as Path;
 
+import '../widget/app_bar.dart';
 import 'home_screen.dart';
 
 class LoginDetailsPage extends StatefulWidget {
@@ -12,21 +17,63 @@ class LoginDetailsPage extends StatefulWidget {
 class _LoginDetailsPageState extends State<LoginDetailsPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
+  final TextEditingController weightController = TextEditingController();
+  final TextEditingController heightController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  File? _image;
+  String? _uploadedFileURL;
 
-   void saveUserDetails() async {
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+      uploadFile();
+    } else {
+      print('No image selected.');
+    }
+  }
+
+  Future uploadFile() async {
+    if (_image == null) return;
+    final fileName = Path.basename(_image!.path);
+    final destination = 'profile_pictures/$fileName';
+
+    try {
+      final ref = FirebaseStorage.instance.ref(destination);
+      final task = ref.putFile(_image!);
+      final snapshot = await task.whenComplete(() {});
+      final urlDownload = await snapshot.ref.getDownloadURL();
+
+      setState(() {
+        _uploadedFileURL = urlDownload;
+      });
+    } catch (e) {
+      print('error occured');
+    }
+  }
+
+  void saveUserDetails() async {
     if (_formKey.currentState!.validate()) {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        // Save name and age to users collection
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'name': nameController.text,
           'age': int.parse(ageController.text),
-          'phone': user.phoneNumber, // Save the phone number to users collection
+          'weight': double.parse(weightController.text),
+          'height': double.parse(heightController.text),
+          'phone': user.phoneNumber,
+          'profile_picture': _uploadedFileURL,
         });
 
-        // Create a separate collection to map phone numbers to UIDs
-        await FirebaseFirestore.instance.collection('phoneNumbers').doc(user.phoneNumber).set({
+        await FirebaseFirestore.instance
+            .collection('phoneNumbers')
+            .doc(user.phoneNumber)
+            .set({
           'uid': user.uid,
         });
 
@@ -41,55 +88,109 @@ class _LoginDetailsPageState extends State<LoginDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Enter your details")),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  hintText: 'Name',
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
+      appBar: CustomAppBar(),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              // Profile Picture
+              if (_image != null) Image.file(_image!, height: 150),
+              ElevatedButton(
+                onPressed: getImage,
+                child: Text("Pick Profile Picture"),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                controller: ageController,
-                decoration: const InputDecoration(
-                  hintText: 'Age',
-                  labelText: 'Age',
-                  border: OutlineInputBorder(),
+              // Name input
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    hintText: 'Name',
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
                 ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your age';
-                  }
-                  if (int.tryParse(value) == null) {
-                    return 'Please enter a valid age';
-                  }
-                  return null;
-                },
               ),
-            ),
-            ElevatedButton(
-              onPressed: saveUserDetails,
-              child: Text("Save Details"),
-            ),
-          ],
+              // Age input
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  controller: ageController,
+                  decoration: const InputDecoration(
+                    hintText: 'Age',
+                    labelText: 'Age',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your age';
+                    }
+                    if (int.tryParse(value) == null) {
+                      return 'Please enter a valid age';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              // Weight input
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  controller: weightController,
+                  decoration: const InputDecoration(
+                    hintText: 'Weight (kg)',
+                    labelText: 'Weight',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your weight';
+                    }
+                    if (double.tryParse(value) == null) {
+                      return 'Please enter a valid weight';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              // Height input
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  controller: heightController,
+                  decoration: const InputDecoration(
+                    hintText: 'Height (cm)',
+                    labelText: 'Height',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your height';
+                    }
+                    if (double.tryParse(value) == null) {
+                      return 'Please enter a valid height';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              ElevatedButton(
+                onPressed: saveUserDetails,
+                child: Text("Save Details"),
+              ),
+            ],
+          ),
         ),
       ),
     );

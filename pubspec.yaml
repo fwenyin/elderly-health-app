@@ -18,6 +18,7 @@ dependencies:
   provider: ^6.0.0
   firebase_auth: ^4.12.0
   firebase_core: ^2.20.0
+  firebase_storage: ^11.5.2
   intl_phone_field: ^3.1.0
   cloud_firestore: ^4.12.1
   http: ^1.1.0
@@ -27,7 +28,9 @@ dependencies:
   intl_translation: ^0.18.2
   intl: ^0.18.1
   intl_utils: ^2.8.5
-
+  image_picker: ^1.0.4
+  firebase_messaging: ^14.7.5
+  fl_chart: ^0.64.0
 
 dev_dependencies:
   flutter_test:

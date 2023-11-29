@@ -150,7 +150,7 @@ abstract class AppLocalizations {
   /// No description provided for @bloodPressure.
   ///
   /// In en, this message translates to:
-  /// **'Blood Pressure'**
+  /// **'Blood Pressure (Sys/Dia mmHg)'**
   String get bloodPressure;
 
   /// No description provided for @bloodSugar.
@@ -450,7 +450,7 @@ abstract class AppLocalizations {
   /// No description provided for @specifyEat.
   ///
   /// In en, this message translates to:
-  /// **'Specify when to eat (eg. 3 times a week)'**
+  /// **'When to eat?'**
   String get specifyEat;
 
   /// No description provided for @friendPhone.
@@ -518,6 +518,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ASK'**
   String get ask;
+
+  /// No description provided for @chatbotDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'I am a health advisor bot that can help to provide advice according to your medical symptoms. However, this is not a foolproof professional advice and do seek timely medical attention when necessary. What symptoms do you have today?'**
+  String get chatbotDefault;
+
+  /// No description provided for @enterSymptoms.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your symptoms'**
+  String get enterSymptoms;
+
+  /// No description provided for @bot.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Bot'**
+  String get bot;
+
+  /// No description provided for @changePicture.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Profile Picture'**
+  String get changePicture;
+
+  /// No description provided for @weight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (kg)'**
+  String get weight;
+
+  /// No description provided for @height.
+  ///
+  /// In en, this message translates to:
+  /// **'Height (cm)'**
+  String get height;
+
+  /// No description provided for @enterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get enterName;
+
+  /// No description provided for @enterAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your age'**
+  String get enterAge;
+
+  /// No description provided for @enterWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your weight'**
+  String get enterWeight;
+
+  /// No description provided for @enterHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your height'**
+  String get enterHeight;
+
+  /// No description provided for @editDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Details'**
+  String get editDetails;
+
+  /// No description provided for @logMeasurement.
+  ///
+  /// In en, this message translates to:
+  /// **'Log your daily measurements!'**
+  String get logMeasurement;
+
+  /// No description provided for @pulse.
+  ///
+  /// In en, this message translates to:
+  /// **'Pulse Rate'**
+  String get pulse;
+
+  /// No description provided for @systolic.
+  ///
+  /// In en, this message translates to:
+  /// **'Systolic'**
+  String get systolic;
+
+  /// No description provided for @diastolic.
+  ///
+  /// In en, this message translates to:
+  /// **'Diastolic'**
+  String get diastolic;
+
+  /// No description provided for @logData.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Data'**
+  String get logData;
+
+  /// No description provided for @bmi.
+  ///
+  /// In en, this message translates to:
+  /// **'Current BMI'**
+  String get bmi;
+
+  /// No description provided for @pulsebpm.
+  ///
+  /// In en, this message translates to:
+  /// **'Pulse Rate (bpm)'**
+  String get pulsebpm;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
