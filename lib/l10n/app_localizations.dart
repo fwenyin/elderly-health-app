@@ -626,6 +626,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pulse Rate (bpm)'**
   String get pulsebpm;
+
+  /// No description provided for @noBloodPressure.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no blood pressure added.'**
+  String get noBloodPressure;
+
+  /// No description provided for @noPulse.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no pulse rate added.'**
+  String get noPulse;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

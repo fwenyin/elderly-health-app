@@ -270,4 +270,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get pulsebpm => '脉搏率（次/分钟）';
+
+  @override
+  String get noBloodPressure => '您还没有添加血压。';
+
+  @override
+  String get noPulse => '您还没有添加脉搏率。';
 }

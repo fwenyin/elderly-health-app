@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../widget/app_bar.dart';
@@ -74,22 +75,26 @@ class _HealthPageState extends State<HealthPage> {
                             ),
                           ),
                           SizedBox(height: 10.0),
-                          _buildEntryField(AppLocalizations.of(context)!.pulse, heartRateController),
+                          _buildEntryField(AppLocalizations.of(context)!.pulse,
+                              heartRateController),
                           Row(
                             children: [
                               Expanded(
                                   child: _buildEntryField(
-                                      AppLocalizations.of(context)!.systolic, systolicController)),
+                                      AppLocalizations.of(context)!.systolic,
+                                      systolicController)),
                               SizedBox(width: 10),
                               Expanded(
                                   child: _buildEntryField(
-                                      AppLocalizations.of(context)!.diastolic, diastolicController)),
+                                      AppLocalizations.of(context)!.diastolic,
+                                      diastolicController)),
                             ],
                           ),
                           SizedBox(height: 10.0),
                           ElevatedButton(
                               onPressed: _saveDataToFirestore,
-                              child: Text(AppLocalizations.of(context)!.logData)),
+                              child:
+                                  Text(AppLocalizations.of(context)!.logData)),
                         ],
                       ),
                     ),
@@ -116,10 +121,22 @@ class _HealthPageState extends State<HealthPage> {
                 SizedBox(height: 10.0),
                 _buildLegend(),
                 SizedBox(height: 5.0),
-                Container(
-                    height: 200,
-                    child: LineChart(_buildBloodPressure(
-                        systolicChartData, diastolicChartData, chartDates))),
+                systolicChartData.isEmpty || diastolicChartData.isEmpty
+                    ? Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 30.0, bottom: 40.0),
+                              child: Text(AppLocalizations.of(context)!.noBloodPressure),
+                            )
+                          ]))
+                    : Container(
+                        height: 200,
+                        child: LineChart(_buildBloodPressure(
+                            systolicChartData, diastolicChartData, chartDates)),
+                      ),
                 SizedBox(height: 20.0),
                 Text(
                   AppLocalizations.of(context)!.pulsebpm,
@@ -128,9 +145,22 @@ class _HealthPageState extends State<HealthPage> {
                   ),
                 ),
                 SizedBox(height: 10.0),
-                Container(
-                    height: 200,
-                    child: LineChart(_buildPulse(heartRateData, chartDates)))
+                systolicChartData.isEmpty || diastolicChartData.isEmpty
+                    ? Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 30.0),
+                              child: Text(AppLocalizations.of(context)!.noPulse),
+                            )
+                          ]))
+                    : Container(
+                        height: 200,
+                        child:
+                            LineChart(_buildPulse(heartRateData, chartDates)),
+                      ),
               ],
             ),
           );
@@ -150,6 +180,10 @@ class _HealthPageState extends State<HealthPage> {
   Widget _buildEntryField(String label, TextEditingController controller) {
     return TextField(
       controller: controller,
+      keyboardType: TextInputType.number, // Set the keyboard type to number
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly, // Only allow digits
+      ],
       decoration: InputDecoration(
         labelText: label,
       ),
@@ -173,6 +207,8 @@ class _HealthPageState extends State<HealthPage> {
     heartRateController.clear();
     systolicController.clear();
     diastolicController.clear();
+
+    await fetchHealthData();
   }
 
   Future<void> _fetchBmi() async {
@@ -215,13 +251,14 @@ class _HealthPageState extends State<HealthPage> {
       diastolicData.add(FlSpot(xValue, dia));
       hrData.add(FlSpot(xValue, hr));
     }
-
-    setState(() {
-      systolicChartData = systolicData;
-      diastolicChartData = diastolicData;
-      heartRateData = hrData;
-      chartDates = dates;
-    });
+    if (healthLogs.docs.isNotEmpty) {
+      setState(() {
+        systolicChartData = systolicData;
+        diastolicChartData = diastolicData;
+        heartRateData = hrData;
+        chartDates = dates;
+      });
+    }
   }
 
   LineChartData _buildPulse(List<FlSpot> pulseData, List<DateTime> dates) {

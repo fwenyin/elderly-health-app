@@ -90,5 +90,7 @@
   "logData": "Log Data",
   "bmi": "Current BMI",
   "bloodPressure": "Blood Pressure (Sys/Dia mmHg)",
-  "pulsebpm": "Pulse Rate (bpm)"
+  "pulsebpm": "Pulse Rate (bpm)",
+  "noBloodPressure": "You have no blood pressure added.",
+  "noPulse": "You have no pulse rate added."
 }

@@ -90,5 +90,7 @@
   "logData": "记录数据",
   "bmi": "当前BMI",
   "bloodPressure": "血压（收缩压/舒张压mmHg）",
-  "pulsebpm": "脉搏率（次/分钟）"
+  "pulsebpm": "脉搏率（次/分钟）",
+  "noBloodPressure": "您还没有添加血压。",
+  "noPulse": "您还没有添加脉搏率。"
 }

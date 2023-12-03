@@ -53,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       Text(_userName ?? 'Loading name...',
                           style: TextStyle(fontSize: 18)),
-                      SizedBox(height: 7),
+                      SizedBox(height: 15),
                       Text(
                           '${AppLocalizations.of(context)!.age}: ${_userAge ?? 'Loading age...'}'),
                     ],

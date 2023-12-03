@@ -270,4 +270,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pulsebpm => 'Pulse Rate (bpm)';
+
+  @override
+  String get noBloodPressure => 'You have no blood pressure added.';
+
+  @override
+  String get noPulse => 'You have no pulse rate added.';
 }
